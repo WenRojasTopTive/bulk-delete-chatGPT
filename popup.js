@@ -37,7 +37,5 @@ document.getElementById('remove-checkboxes').addEventListener('click', () => {
 
 // Update copyright year
 const currentYear = new Date().getFullYear();
-document.getElementById('copyright').innerHTML =
-  '&copy; ' + currentYear + ' <a href="https://github.com/qcrao/bulk-delete-chatGPT" target="_blank">qcrao@GitHub</a>';
 
 

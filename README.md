@@ -2,7 +2,7 @@
 
 # bulk-delete-chatGPT
 
-English | [中文版本](./README-CN.md)
+English
 
 ## Project Introduction
 

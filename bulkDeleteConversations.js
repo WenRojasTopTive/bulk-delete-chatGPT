@@ -2,14 +2,11 @@ async function bulkDeleteConversations() {
   const selectedConversations = getSelectedConversations();
 
   if (selectedConversations.length === 0) {
-      console.log("No conversations to delete.");
-      removeAllCheckboxes();
-      return;
+    removeAllCheckboxes();
+    return;
   }
 
-  console.log("Selected Conversations:", selectedConversations);
-
-  // 使用 for 循环按顺序删除选中的对话
+  // Use a for loop to delete selected conversations in order
   for (const element of selectedConversations) {
     await delay(300);
     await deleteConversation(element);
@@ -26,57 +23,48 @@ function removeAllCheckboxes() {
 }
 
 async function deleteConversation(checkbox) {
-  const conversationElement = await checkbox.closest('.flex.p-3.items-center.gap-3.relative.rounded-md')
+  const conversationElement = await checkbox.closest('a');
 
-  console.log("1. 开始删除", conversationElement);
-  conversationElement.click(); // 点击对话
+  conversationElement.click();
 
-  // debugger
-
-  const deleteButton = await waitForElement("nav div a>div>button:nth-child(2)");
+  const deleteButton = await waitForElement('nav div a>div>button:nth-child(2)');
 
   if (deleteButton) {
-      console.log("2. 点击删除按钮");
-      deleteButton.click(); // 点击删除按钮
+    deleteButton.click(); // Click on the delete button
 
-      // 等待确认删除对话框的按钮出现
-      const confirmButton = await waitForElement('button.btn.btn-danger');
+    const confirmButton = await waitForElement('button.btn.btn-danger');
 
-      if (confirmButton) {
-          console.log("3. 点击确认按钮");
-          confirmButton.click();
+    if (confirmButton) {
+      confirmButton.click();
 
-          // 等待删除按钮消失
-          await waitForElementToDisappear('button.btn.btn-danger');
-      }
+      await waitForElementToDisappear('button.btn.btn-danger');
+    }
   }
-
-  console.log("4. 完成删除");
 }
 
-// 用于等待某元素出现的函数
+// Function to wait for an element to appear
 async function waitForElement(selector, timeout = 5000) {
   const startedAt = Date.now();
-  while ((Date.now() - startedAt) < timeout) {
-      const element = document.querySelector(selector);
-      if (element) return element;
-      await delay(100);
+  while (Date.now() - startedAt < timeout) {
+    const element = document.querySelector(selector);
+    if (element) return element;
+    await delay(100);
   }
   throw new Error(`Element ${selector} not found within ${timeout}ms`);
 }
 
-// 用于等待某元素消失的函数
+// Function to wait for an element to disappear
 async function waitForElementToDisappear(selector, timeout = 5000) {
   const startedAt = Date.now();
-  while ((Date.now() - startedAt) < timeout) {
-      const element = document.querySelector(selector);
-      if (!element) return;
-      await delay(100);
+  while (Date.now() - startedAt < timeout) {
+    const element = document.querySelector(selector);
+    if (!element) return;
+    await delay(100);
   }
   throw new Error(`Element ${selector} did not disappear within ${timeout}ms`);
 }
 
-// 延迟函数
+// Delay function
 function delay(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
